@@ -1,0 +1,14 @@
+{
+  "name": "seerbit-react-native",
+  "version": "1.0.0",
+  "description": "Test react native publish to npm",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ayodele Praise",
+  "license": "ISC",
+  "devDependencies": {
+    "metro-react-native-babel-preset": "^0.61.0"
+  }
+}
