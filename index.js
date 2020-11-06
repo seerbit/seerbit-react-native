@@ -95,7 +95,7 @@ export default class Seerbit extends Component {
     var webResponse = JSON.parse(data);
     switch (webResponse.event) {
       case "cancelled":
-        this.setState({ showModal: false, report_link: undefined }, () => { //just added report link 05/11
+        this.setState({ showModal: false }, () => { //just added report link 05/11( report_link: undefined)
           this.props.onCancel && this.props.onCancel();
         });
         break;
