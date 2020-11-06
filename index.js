@@ -4,8 +4,7 @@ import {
   Text,
   View,
   TouchableOpacity,
-  ActivityIndicator,
-  StyleSheet,
+  ActivityIndicator
 } from "react-native";
 import WebView, { WebView as Redirect } from "react-native-webview";
 export default class Seerbit extends Component {
@@ -33,7 +32,7 @@ export default class Seerbit extends Component {
               </head>
               <body  onload="paywithSeerbit()" style="background-color:#fff;height:100vh ">
               <form>
-              <script src="https://stg-checkout.seerbitapi.com/api/v2/test.js"></script>
+              <script src="https://checkout.seerbitapi.com/api/v2/seerbit.js"></script>
                </form>
                <script>
                function paywithSeerbit() {
@@ -52,7 +51,7 @@ export default class Seerbit extends Component {
                 function callback(response) {
                  console.log(response) /*response of transaction*/
                  var resp = {event:'callback', response};
-                 alert(JSON.stringify(resp))
+                
 
                  window.ReactNativeWebView.postMessage(JSON.stringify(resp))
                 }, 
@@ -96,7 +95,7 @@ export default class Seerbit extends Component {
     var webResponse = JSON.parse(data);
     switch (webResponse.event) {
       case "cancelled":
-        this.setState({ showModal: false }, () => {
+        this.setState({ showModal: false, report_link: undefined }, () => { //just added report link 05/11
           this.props.onCancel && this.props.onCancel();
         });
         break;

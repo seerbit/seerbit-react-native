@@ -32,14 +32,14 @@ class Example extends Component {
           ActivityIndicatorColor="blue"
           btnStyles={{
             alignItems: 'center',
-            backgroundColor: 'green',
+            backgroundColor: "green",
             padding: 15,
             marginTop: 100,
             marginLeft: 30,
             marginRight: 30,
           }}
           textStyles={{
-            color: '#fff',
+            color: "#fff",
           }}
           tranref={new Date().getTime()}
           currency="NGN"
@@ -47,7 +47,7 @@ class Example extends Component {
           country="NG"
           callbackurl="YOUR_CALLBACK_URL"
           public_key="YOUR_API_KEY"
-          version='0.2.0' // "0.2.0" or "0.1.0"
+          version="0.2.0" // "0.2.0" or "0.1.0"
           onSuccess={(response) => { console.log(response) }}
           onCancel={() => { console.log('something went wrong') }}
         />
