@@ -4,20 +4,22 @@
 
 # Seerbit React Native SDK
 
-Seerit React Native SDK can be used to integrate the Seerit payment gateway into your react native app. 
+Seerit React Native SDK can be used to integrate the SeerBit payment gateway into your react native application. 
 
 ## Requirements 
-Visit [Seerbit Documentation](https://doc.seerbit.com) to get started. 
+Register for a merchant account on [Seerbit Merchant Dashboard](https://dashboard.seerbitapi.com) to get started. 
+
 ```bash
 npm install --save seerbit-react-native
 ```
-## Documentation 
+## API Documentation 
    https://doc.seerbit.com
+
 ## Support 
-If you have any problems, questions or suggestions, create an issue here or send your inquiry to care@seerbit.com.
+If you have any problems, questions or suggestions, create an issue here or send your inquiry to care@seerbit.com
 
 ## Implementation
-You should already have your API keys. If not, go to [seerbit.com](https://doc.seerbit.com).
+You should already have your API keys. If not, go to [dashboard.seerbitapi.com](https://dashboard.seerbitapi.com).
 ```jsx
 import React, { Component } from 'react';
 import { View } from 'react-native';
@@ -26,32 +28,38 @@ class Example extends Component {
   render() {
     return (
       <View style={{ flex: 1 }}>
-        <Seerbit
-          buttonText="Pay with Seerbit"
-          amount="105.00"
-          ActivityIndicatorColor="blue"
-          btnStyles={{
-            alignItems: 'center',
-            backgroundColor: "green",
-            padding: 15,
-            marginTop: 100,
-            marginLeft: 30,
-            marginRight: 30,
-          }}
-          textStyles={{
-            color: "#fff",
-          }}
-          tranref={new Date().getTime()}
-          currency="NGN"
-          description="LIVE"
-          country="NG"
-          callbackurl="YOUR_CALLBACK_URL"
-          public_key="YOUR_API_KEY"
-          version="0.2.0" // "0.2.0" or "0.1.0"
-          onSuccess={(response) => { console.log(response) }}
-          onCancel={() => { console.log('something went wrong') }}
-        />
-      </View>
+        <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                <Seerbit
+                  buttonText="Pay with Seerbit"//OPTIONAL
+                  showButton={ false }//OPTIONAL DEFAULTS TO TRUE
+                  autoLoad={ true } //OPTIONAL DEFAULTS TO TRUE
+                  amount="105.00"//REQUIRED
+                  ActivityIndicatorColor="blue"//OPTIONAL
+                  btnStyles={{
+                    alignItems: 'center',
+                    backgroundColor: "green",
+                    padding: 15,
+                    marginTop: 100,
+                    marginLeft: 30,
+                    marginRight: 30,
+                  }}//OPTIONAL
+                  textStyles={{
+                    color: "#fff",
+                  }}//OPTIONAL
+                  ref={ seerBitCheckout }//REQUIRED
+                  transaction_reference={new Date().getTime()}//REQUIRED
+                  currency="NGN"//OPTIONAL FOR NIGERIA
+                  pocket_reference=""//OPTIONAL
+                  vendor_id=""//OPTIONAL
+                  description="LIVE"//OPTIONAL
+                  full_name="Bello Kola"//OPTIONAL
+                  email="bellokola@mail.com"//OPTIONAL
+                  country="NG"//OPTIONAL
+                  public_key="YOUR_PUBLIC_KEY"//REQUIRED
+                  onSuccess={(response) => { console.log(response) }}
+                  onCancel={() => { console.log('something went wrong') }}
+                />
+              </View>
     );
   }
 }

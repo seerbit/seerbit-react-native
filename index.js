@@ -4,10 +4,13 @@ import {
   Text,
   View,
   TouchableOpacity,
-  ActivityIndicator
-} from "react-native";
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  SafeAreaView, Image,
+} from 'react-native';
 import WebView, { WebView as Redirect } from "react-native-webview";
-export default class Seerbit extends Component {
+
+export default class Index extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -15,6 +18,32 @@ export default class Seerbit extends Component {
       showRedirectModal: false,
     };
   }
+
+  componentDidMount(){
+    this.setState({
+      showRedirectModal: false
+    });
+    if (this.props.autoLoad) {
+      this.setState({
+        showModal: true
+      });
+    }
+  }
+
+  StartPayment = ()=>{
+    this.setState({
+      showModal: true,
+      showRedirectModal: false
+    });
+  }
+
+  EndPayment = ()=>{
+    this.setState({
+      showModal: false,
+      showRedirectModal: false
+    });
+  }
+
   Seerbit = (report_link) => ({
     html: `  
       <!DOCTYPE html>
@@ -23,12 +52,7 @@ export default class Seerbit extends Component {
                       <meta charset="UTF-8">
                       <meta http-equiv="X-UA-Compatible" content="ie=edge">
                       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                      <!-- Latest compiled and minified CSS -->
-                      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-                      <!-- Fonts -->
-                      <link rel="dns-prefetch" href="//fonts.gstatic.com">
-                      <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
-                      <title>SEERBIT</title>
+                      <title>SeerBit</title>
               </head>
               <body  onload="paywithSeerbit()" style="background-color:#fff;height:100vh ">
               <form>
@@ -37,26 +61,26 @@ export default class Seerbit extends Component {
                <script>
                function paywithSeerbit() {
                  SeerbitPay({
-                 "tranref": "${this.props.tranref}",
+                 "tranref": "${this.props.transaction_reference}",
                  "currency": "${this.props.currency}",
-                 "description": "LIVE",
+                 "email": "${this.props.email ? this.props.email : ''}",
+                 "description":"${this.props.description}",
+                 "full_name":"${this.props.full_name ? this.props.full_name : ''}",
                  "country": "${this.props.country}",
                  "amount": "${this.props.amount}",
                  "callbackurl": "${this.props.callbackurl}",
                  "public_key":"${this.props.public_key}", 
                  "narrator":"seerbit-react-native",
                  "report_link":"${report_link}",
-                 "version": "${this.props.version}"
+                 "pocketReference":"${this.props.pocket_reference}",
+                 "vendorId":"${this.props.vendor_id}",
+                 "version": "0.2.0"
                 }, 
                 function callback(response) {
-                 console.log(response) /*response of transaction*/
                  var resp = {event:'callback', response};
-                
-
                  window.ReactNativeWebView.postMessage(JSON.stringify(resp))
                 }, 
                 function close(close) {
-                 console.log(close) /*transaction close*/
                  var resp = {event:'cancelled'};
                  window.ReactNativeWebView.postMessage(JSON.stringify(resp))
                 })
@@ -67,14 +91,6 @@ export default class Seerbit extends Component {
       `,
   });
   handleWebViewNavigationStateChange = (newNavState) => {
-    // newNavState looks something like this:
-    // {
-    //   url?: string;
-    //   title?: string;
-    //   loading?: boolean;
-    //   canGoBack?: boolean;
-    //   canGoForward?: boolean;
-    // }
     const { url } = newNavState;
     if (!url) return;
     const uri = decodeURIComponent(url);
@@ -86,16 +102,16 @@ export default class Seerbit extends Component {
         showRedirectModal: false,
         showModal: true,
         report_link: url,
-        vers: uri.includes("vers=two") //check if report link is version 2
+        vers: uri.includes("vers=two")
       });
-      // maybe close this view?
+
     }
   };
-  messageRecived = (data) => {
+  messageReceived = (data) => {
     var webResponse = JSON.parse(data);
     switch (webResponse.event) {
       case "cancelled":
-        this.setState({ showModal: false }, () => { //just added report link 05/11( report_link: undefined)
+        this.setState({ showModal: false, showRedirectModal:false }, () => {
           this.props.onCancel && this.props.onCancel();
         });
         break;
@@ -115,7 +131,7 @@ export default class Seerbit extends Component {
             if (this.state.response && this.state.vers) return; // return if onSuccess() has already been triggered for version 2
             this.setState({ ...this.state, response: true });
             this.props.onSuccess &&
-              this.props.onSuccess({ ...webResponse.response });
+            this.props.onSuccess({ ...webResponse.response });
           }
         });
         break;
@@ -128,12 +144,14 @@ export default class Seerbit extends Component {
   };
   render() {
     return (
-      <View>
+      <SafeAreaView>
+        <KeyboardAvoidingView behavior="position" enabled>
         <Modal
-          visible={this.state.showModal}
+          visible={this.state.showModal && !this.state.showRedirectModal}
           animationType="slide"
           transparent={true}
         >
+          { (!this.state.showRedirectModal && this.state.showModal) &&
           <WebView
             javaScriptEnabled={true}
             javaScriptEnabledAndroid={true}
@@ -141,30 +159,38 @@ export default class Seerbit extends Component {
             domStorageEnabled={true}
             allowFileAccess={true}
             originWhitelist={["*"]}
-            ref={(webView) => (this.MyWebView = webView)}
             source={this.Seerbit(this.state.report_link)}
             allowUniversalAccessFromFileURLs={true}
             onMessage={(e) => {
-              this.messageRecived(e.nativeEvent.data);
+              this.messageReceived(e.nativeEvent.data);
             }}
-            onLoadStart={() => this.setState({ isLoading: true })}
-            onLoadEnd={() => this.setState({ isLoading: false })}
+            onLoadStart={() => this.setState({isLoading: true})}
+            onLoadEnd={() => this.setState({isLoading: false})}
           />
-          {/*Start of Loading modal*/}
+          }
+          {!this.state.isLoading || (this.props.email ? this.props.email.length === 0 : true) &&
+          <TouchableOpacity
+            style={ { backgroundColor:'transparent', position:'absolute', top:10, right:10} }
+            onPress={() => this.setState({ showModal: false })}
+          >
+            <Image source={ require('./error.png')}/>
+          </TouchableOpacity>
+          }
           {this.state.isLoading && (
             <View>
               <ActivityIndicator
-                size="large"
+                size="small"
                 color={this.props.ActivityIndicatorColor}
               />
             </View>
           )}
         </Modal>
         <Modal
-          visible={this.state.showRedirectModal}
+          visible={this.state.showRedirectModal && !this.state.showModal}
           animationType="slide"
           transparent={false}
         >
+          { (this.state.showRedirectModal && !this.state.showModal) &&
           <Redirect
             javaScriptEnabled={true}
             javaScriptEnabledAndroid={true}
@@ -172,17 +198,17 @@ export default class Seerbit extends Component {
             domStorageEnabled={true}
             allowFileAccess={true}
             originWhitelist={["*"]}
-            ref={(webView) => (this.RedirectView = webView)}
-            source={{ uri: this.state.redirecturl }}
+            source={{uri: this.state.redirecturl}}
             allowUniversalAccessFromFileURLs={true}
             onMessage={(e) => {
-              this.messageRecived(e.nativeEvent.data);
+              this.messageReceived(e.nativeEvent.data);
             }}
             onNavigationStateChange={this.handleWebViewNavigationStateChange}
-            onLoadStart={() => this.setState({ isLoading: true })}
-            onLoadEnd={() => this.setState({ isLoading: false })}
+            onLoadStart={() => this.setState({isLoading: true})}
+            onLoadEnd={() => this.setState({isLoading: false})}
           />
-          {/*Start of Loading modal*/}
+          }
+
           {this.state.isLoading && (
             <View>
               <ActivityIndicator
@@ -192,19 +218,29 @@ export default class Seerbit extends Component {
             </View>
           )}
         </Modal>
-        <TouchableOpacity
-          style={this.props.btnStyles}
-          onPress={() => this.setState({ showModal: true })}
-        >
-          <Text style={this.props.textStyles}>{this.props.buttonText}</Text>
-        </TouchableOpacity>
-      </View>
+          {this.props.showButton &&
+          <TouchableOpacity
+            style={this.props.btnStyles}
+            onPress={() => this.setState({showModal: true})}
+          >
+            <Text style={this.props.textStyles}>{this.props.buttonText}</Text>
+          </TouchableOpacity>
+          }
+        </KeyboardAvoidingView>
+      </SafeAreaView>
     );
   }
 }
-Seerbit.defaultProps = {
-  buttonText: "Pay Now",
-  ActivityIndicatorColor: "green",
+Index.defaultProps = {
+  buttonText: "Pay",
+  currency: "NGN",
+  country: "NG",
+  pocket_reference:"",
+  vendor_id:"",
+  description: "LIVE",
+  autoLoad:true,
+  showButton:true,
+  ActivityIndicatorColor: "#3f99f0",
   btnStyles: {
     alignItems: "center",
     backgroundColor: "Yellow",

@@ -1,22 +1,19 @@
 {
   "name": "seerbit-react-native",
-  "version": "1.0.1",
-  "description": "Seebrit React Native SDK can be used to integrate the Seebrit payment gateway into your react native app.",
+  "version": "1.1.1",
+  "description": "Accept Payments in your react native application with Card, Account, Transfer, USSD, Mobile Money.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/seerbit-openapi/Seerbit-react-native-sdk/tree/master"
+    "url": "git+https://github.com/seerbit/seerbit-react-native"
   },
-  "author": "Ayodele PraiseGod",
+  "author": "SeerBit",
   "license": "MIT",
-  "devDependencies": {
-    "metro-react-native-babel-preset": "^0.61.0"
-  },
-  "homepage": "https://github.com/seerbit-openapi/Seerbit-react-native-sdk/blob/master/README.md",
-  "dependencies": {
-    "react-native-webview": "^10.10.0"
+  "homepage": "https://github.com/seerbit/seerbit-react-native#readme",
+  "peerDependencies": {
+    "react-native-webview": "*"
   }
 }
