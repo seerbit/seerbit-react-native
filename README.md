@@ -24,8 +24,8 @@ You should already have your API keys. If not, go to [dashboard.seerbitapi.com](
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import Seerbit from 'seerbit-react-native';
-class Example extends Component {
-  render() {
+const TestApp = () => {
+   const seerBitCheckout = useRef();
     return (
       <View style={{ flex: 1 }}>
         <View style={{justifyContent: 'center', alignItems: 'center'}}>
@@ -60,10 +60,10 @@ class Example extends Component {
                   onCancel={() => { console.log('something went wrong') }}
                 />
               </View>
+              </View>
     );
-  }
 }
-export default Example;
+export default TestApp;
 
 ```
 ## Contributors
