@@ -1,6 +1,9 @@
-import React, { useState,useRef } from 'react';
+import React, { Component } from 'react';
+import { View } from 'react-native';
 import Seerbit from 'seerbit-react-native';
+import React, { Component } from 'react';
 import { View,Text,TouchableOpacity } from 'react-native';
+import Seerbit from 'seerbit-react-native';
 
 const TestApp = () => {
 

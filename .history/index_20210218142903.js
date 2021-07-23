@@ -16,12 +16,35 @@ export default class Index extends Component {
     this.state = {
       showModal: false,
       showRedirectModal: false,
-      report_link: '',
     };
   }
-  WebViewRef = null
 
-  SeerBitHtml = (report_link) => ({
+  componentDidMount(){
+    this.setState({
+      showRedirectModal: false
+    });
+    if (this.props.autoLoad) {
+      this.setState({
+        showModal: true
+      });
+    }
+  }
+
+  StartPayment = ()=>{
+    this.setState({
+      showModal: true,
+      showRedirectModal: false
+    });
+  }
+
+  EndPayment = ()=>{
+    this.setState({
+      showModal: false,
+      showRedirectModal: false
+    });
+  }
+
+  Seerbit = (report_link) => ({
     html: `  
       <!DOCTYPE html>
       <html lang="en">
@@ -67,39 +90,6 @@ export default class Index extends Component {
       </html> 
       `,
   });
-  Seerbit = ''
-
-  componentDidMount(){
-    this.Seerbit = this.SeerBitHtml
-    this.setState({
-      showRedirectModal: false
-    });
-    if (this.props.autoLoad) {
-      this.setState({
-        showModal: true
-      });
-    }
-  }
-
-  StartPayment = ()=>{
-    this.setState({
-      showModal: true,
-      showRedirectModal: false
-    });
-  }
-
-  EndPayment = ()=>{
-    this.setState({
-      showModal: false,
-      showRedirectModal: false,
-      report_link: '',
-    }, ()=> {
-      this.Seerbit = this.SeerBitHtml;
-      this.WebViewRef && this.state.WebViewRef.reload();
-    });
-  }
-
-
   handleWebViewNavigationStateChange = (newNavState) => {
     const { url } = newNavState;
     if (!url) return;
@@ -163,7 +153,6 @@ export default class Index extends Component {
         >
           { (!this.state.showRedirectModal && this.state.showModal) &&
           <WebView
-            ref={WEBVIEW_REF => (this.WebViewRef = WEBVIEW_REF)}
             javaScriptEnabled={true}
             javaScriptEnabledAndroid={true}
             mixedContentMode="always"
