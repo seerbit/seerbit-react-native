@@ -1,5 +1,5 @@
 <p align="center">
-<img width="200" valign="top" src="https://camo.githubusercontent.com/c95fa9deb3f9e4fa1d700aebdbe3373227d826ec/68747470733a2f2f7265732e636c6f7564696e6172792e636f6d2f6479326461677567702f696d6167652f75706c6f61642f76313537313234393635382f736565726269742d6c6f676f5f6d64696e6f6d2e706e67" data-canonical-src="https://res.cloudinary.com/dpejkbof5/image/upload/v1620323718/Seerbit_logo_png_ddcor4.png" style="max-width:100%; ">
+<img width="500" valign="top" src="https://res.cloudinary.com/dpejkbof5/image/upload/v1620323718/Seerbit_logo_png_ddcor4.png" data-canonical-src="https://res.cloudinary.com/dpejkbof5/image/upload/v1620323718/Seerbit_logo_png_ddcor4.png" style="max-width:100%; ">
 </p>
 
 # Seerbit React Native WebView SDK
