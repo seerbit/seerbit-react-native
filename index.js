@@ -47,11 +47,15 @@ export default class Index extends Component {
                  "amount": "${this.props.amount}",
                  "callbackurl": "${this.props.callbackurl}",
                  "public_key":"${this.props.public_key}", 
+                 "setAmountByCustomer":"${this.props.setAmountByCustomer}", 
+                 "close_prompt":"${this.props.close_prompt}", 
+                 "close_on_success":"${this.props.close_on_success}", 
                  "narrator":"seerbit-react-native",
                  "report_link":"${report_link}",
                  "pocketReference":"${this.props.pocket_reference}",
                  "vendorId":"${this.props.vendor_id}",
-                 "version": "0.2.0"
+                 "version": "0.2.0",
+                 "customization" :"${this.props.customization}"
                 }, 
                 function callback(response) {
                  var resp = {event:'callback', response};
@@ -71,6 +75,7 @@ export default class Index extends Component {
 
   componentDidMount(){
     this.Seerbit = this.SeerBitHtml
+    this.WebViewRef && this.state.WebViewRef.reload();
     this.setState({
       showRedirectModal: false
     });
@@ -82,6 +87,8 @@ export default class Index extends Component {
   }
 
   StartPayment = ()=>{
+    this.Seerbit = this.SeerBitHtml;
+    this.WebViewRef && this.state.WebViewRef.reload();
     this.setState({
       showModal: true,
       showRedirectModal: false
@@ -251,6 +258,9 @@ Index.defaultProps = {
   description: "LIVE",
   autoLoad:true,
   showButton:true,
+  setAmountByCustomer:false,
+  close_on_success:false,
+  close_prompt:false,
   ActivityIndicatorColor: "#3f99f0",
   btnStyles: {
     alignItems: "center",

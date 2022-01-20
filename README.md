@@ -1,6 +1,7 @@
 <p align="center">
-<img width="200" valign="top" src="https://camo.githubusercontent.com/c95fa9deb3f9e4fa1d700aebdbe3373227d826ec/68747470733a2f2f7265732e636c6f7564696e6172792e636f6d2f6479326461677567702f696d6167652f75706c6f61642f76313537313234393635382f736565726269742d6c6f676f5f6d64696e6f6d2e706e67" data-canonical-src="https://res.cloudinary.com/dy2dagugp/image/upload/v1571249658/seerbit-logo_mdinom.png" style="max-width:100%; ">
+<img width="500" valign="top" src="https://res.cloudinary.com/dpejkbof5/image/upload/v1620323718/Seerbit_logo_png_ddcor4.png" data-canonical-src="https://res.cloudinary.com/dpejkbof5/image/upload/v1620323718/Seerbit_logo_png_ddcor4.png" style="max-width:100%; ">
 </p>
+
 
 # Seerbit React Native WebView SDK
 
@@ -19,10 +20,10 @@ yarn add seerbit-react-native
    https://doc.seerbit.com
 
 ## Support 
-If you have any problems, questions or suggestions, create an issue here or send your inquiry to care@seerbit.com
+If you have any problems, questions or suggestions, create an issue here or send your inquiry to developers@seerbit.com
 
 ## Implementation
-You should already have your API keys. If not, go to [dashboard.seerbitapi.com](https://dashboard.seerbitapi.com).
+You should already have your API keys, If not, go to Accounts -> Settings Section -> API Keys section on [dashboard.seerbitapi.com](https://dashboard.seerbitapi.com).
 ```jsx
 
 import React, { useState,useRef } from 'react';
@@ -53,13 +54,13 @@ const TestApp = () => {
         //seerBitCheckout.current.EndPayment()
         //seerBitCheckout.current.StartPayment()
 
-    // THIS CLOSES THE CHECKOUT IMMEDIATELY A PAYMENT IS SUCCESSFUL
+    // THIS CLOSES THE CHECKOUT 
       // seerBitCheckout.current.EndPayment() 
     
     // YOU CAN ALSO DELAY AND DO SOME OTHER LOGIC BEFORE CLOSING THE CHECKOUT
-    setTimeout( ()=>{
-      seerBitCheckout.current.EndPayment()
-    }, 2000);
+    // setTimeout( ()=>{
+    //   seerBitCheckout.current.EndPayment()
+    // }, 2000);
 
     }
 
@@ -91,12 +92,26 @@ const TestApp = () => {
                   description="PAYMENT WITH SEERBIT"//OPTIONAL
                   full_name="John Bello"
                   email="bellokola@mail.com"
+                  close_prompt={false} //Disable the prompt when the cancel button is closed
+                  close_on_success={false} //Immediately close the checkout after a successful transaction
                   country="NG"//OPTIONAL
                   onPress={() => startPay()}//OPTIONAL
                   public_key="YOUR_PUBLIC_KEY"//REQUIRED
                   onSuccess={(response) => { paymentSuccessful() }}
                   onCancel={() => { console.log('something went wrong') }}
                   disabled={ startingPayment }
+                  customization={
+                      {
+                          theme: {
+                              border_color: "#000000",
+                              background_color: "#004C64",
+                              button_color: "#0084A0",
+                          },
+                          payment_method: ["card", "account", "transfer", "wallet", 'ussd'],
+                          // confetti: true, // false;
+                          // logo: "logo_url || base64",
+                      }
+                  }
                 />
              <TouchableOpacity
               style={{
