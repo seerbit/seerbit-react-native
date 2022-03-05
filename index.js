@@ -128,7 +128,7 @@ export default class Index extends Component {
     var webResponse = JSON.parse(data);
     switch (webResponse.event) {
       case "cancelled":
-        this.setState({ showModal: false, showRedirectModal:false }, () => {
+        this.setState({ showModal: false, showRedirectModal:false, report_link: '' }, () => {
           this.props.onCancel && this.props.onCancel();
         });
         break;
@@ -149,12 +149,14 @@ export default class Index extends Component {
             this.setState({ ...this.state, response: true });
             this.props.onSuccess &&
             this.props.onSuccess({ ...webResponse.response });
+            this.props.close_on_success && this.EndPayment()
           }
         });
         break;
       default:
         this.setState({ showModal: false }, () => {
-          this.props.onError();
+          this.props.onError && this.props.onError();
+          this.EndPayment()
         });
         break;
     }
