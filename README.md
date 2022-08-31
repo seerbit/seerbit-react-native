@@ -97,6 +97,7 @@ const TestApp = () => {
                   country="NG"//OPTIONAL
                   onPress={() => startPay()}//OPTIONAL
                   public_key="YOUR_PUBLIC_KEY"//REQUIRED
+                  tokenize={false} //OPTIONAL
                   onSuccess={(response) => { paymentSuccessful() }}
                   onCancel={() => { console.log('something went wrong') }}
                   disabled={ startingPayment }
@@ -142,7 +143,7 @@ export default TestApp;
 <a href="https://github.com/tosyngy">
   <img src="https://github.com/tosyngy.png?size=50">
 </a>
-   <a href="https://github.com/amoskeyz">
+   <a href="https://github.com/amoskeyz" title="amoskeyz">
   <img src="https://github.com/amoskeyz.png?size=50">
 </a>
 </a>
