@@ -6,8 +6,9 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   KeyboardAvoidingView,
-  SafeAreaView, Image,
-} from 'react-native';
+  SafeAreaView,
+  Image,
+} from "react-native";
 import WebView, { WebView as Redirect } from "react-native-webview";
 
 export default class Index extends Component {
@@ -16,10 +17,10 @@ export default class Index extends Component {
     this.state = {
       showModal: false,
       showRedirectModal: false,
-      report_link: '',
+      report_link: "",
     };
   }
-  WebViewRef = null
+  WebViewRef = null;
 
   SeerBitHtml = (report_link) => ({
     html: `  
@@ -40,9 +41,11 @@ export default class Index extends Component {
                  SeerbitPay({
                  "tranref": "${this.props.transaction_reference}",
                  "currency": "${this.props.currency}",
-                 "email": "${this.props.email ? this.props.email : ''}",
+                 "email": "${this.props.email ? this.props.email : ""}",
                  "description":"${this.props.description}",
-                 "full_name":"${this.props.full_name ? this.props.full_name : ''}",
+                 "full_name":"${
+                   this.props.full_name ? this.props.full_name : ""
+                 }",
                  "country": "${this.props.country}",
                  "amount": "${this.props.amount}",
                  "callbackurl": "${this.props.callbackurl}",
@@ -55,7 +58,8 @@ export default class Index extends Component {
                  "pocketReference":"${this.props.pocket_reference}",
                  "vendorId":"${this.props.vendor_id}",
                  "version": "0.2.0",
-                 "customization" :"${this.props.customization}"
+                 "customization" :"${this.props.customization}",
+                 "tokenize":${this.props.tokenize}
                 }, 
                 function callback(response) {
                  var resp = {event:'callback', response};
@@ -71,41 +75,43 @@ export default class Index extends Component {
       </html> 
       `,
   });
-  Seerbit = ''
+  Seerbit = "";
 
-  componentDidMount(){
-    this.Seerbit = this.SeerBitHtml
+  componentDidMount() {
+    this.Seerbit = this.SeerBitHtml;
     this.WebViewRef && this.state.WebViewRef.reload();
     this.setState({
-      showRedirectModal: false
+      showRedirectModal: false,
     });
     if (this.props.autoLoad) {
       this.setState({
-        showModal: true
+        showModal: true,
       });
     }
   }
 
-  StartPayment = ()=>{
+  StartPayment = () => {
     this.Seerbit = this.SeerBitHtml;
     this.WebViewRef && this.state.WebViewRef.reload();
     this.setState({
       showModal: true,
-      showRedirectModal: false
-    });
-  }
-
-  EndPayment = ()=>{
-    this.setState({
-      showModal: false,
       showRedirectModal: false,
-      report_link: '',
-    }, ()=> {
-      this.Seerbit = this.SeerBitHtml;
-      this.WebViewRef && this.state.WebViewRef.reload();
     });
-  }
+  };
 
+  EndPayment = () => {
+    this.setState(
+      {
+        showModal: false,
+        showRedirectModal: false,
+        report_link: "",
+      },
+      () => {
+        this.Seerbit = this.SeerBitHtml;
+        this.WebViewRef && this.state.WebViewRef.reload();
+      }
+    );
+  };
 
   handleWebViewNavigationStateChange = (newNavState) => {
     const { url } = newNavState;
@@ -119,18 +125,20 @@ export default class Index extends Component {
         showRedirectModal: false,
         showModal: true,
         report_link: url,
-        vers: uri.includes("vers=two")
+        vers: uri.includes("vers=two"),
       });
-
     }
   };
   messageReceived = (data) => {
     var webResponse = JSON.parse(data);
     switch (webResponse.event) {
       case "cancelled":
-        this.setState({ showModal: false, showRedirectModal:false, report_link: '' }, () => {
-          this.props.onCancel && this.props.onCancel();
-        });
+        this.setState(
+          { showModal: false, showRedirectModal: false, report_link: "" },
+          () => {
+            this.props.onCancel && this.props.onCancel();
+          }
+        );
         break;
       case "callback":
         this.setState({ showRedirectModal: false }, () => {
@@ -148,15 +156,15 @@ export default class Index extends Component {
             if (this.state.response && this.state.vers) return; // return if onSuccess() has already been triggered for version 2
             this.setState({ ...this.state, response: true });
             this.props.onSuccess &&
-            this.props.onSuccess({ ...webResponse.response });
-            this.props.close_on_success && this.EndPayment()
+              this.props.onSuccess({ ...webResponse.response });
+            this.props.close_on_success && this.EndPayment();
           }
         });
         break;
       default:
         this.setState({ showModal: false }, () => {
           this.props.onError && this.props.onError();
-          this.EndPayment()
+          this.EndPayment();
         });
         break;
     }
@@ -165,87 +173,95 @@ export default class Index extends Component {
     return (
       <SafeAreaView>
         <KeyboardAvoidingView behavior="position" enabled>
-        <Modal
-          visible={this.state.showModal && !this.state.showRedirectModal}
-          animationType="slide"
-          transparent={true}
-        >
-          { (!this.state.showRedirectModal && this.state.showModal) &&
-          <WebView
-            ref={WEBVIEW_REF => (this.WebViewRef = WEBVIEW_REF)}
-            javaScriptEnabled={true}
-            javaScriptEnabledAndroid={true}
-            mixedContentMode="always"
-            domStorageEnabled={true}
-            allowFileAccess={true}
-            originWhitelist={["*"]}
-            source={this.Seerbit(this.state.report_link)}
-            allowUniversalAccessFromFileURLs={true}
-            onMessage={(e) => {
-              this.messageReceived(e.nativeEvent.data);
-            }}
-            onLoadStart={() => this.setState({isLoading: true})}
-            onLoadEnd={() => this.setState({isLoading: false})}
-          />
-          }
-          {!this.state.isLoading || (this.props.email ? this.props.email.length === 0 : true) &&
-          <TouchableOpacity
-            style={ { backgroundColor:'transparent', position:'absolute', top:10, right:10} }
-            onPress={() => this.setState({ showModal: false })}
+          <Modal
+            visible={this.state.showModal && !this.state.showRedirectModal}
+            animationType="slide"
+            transparent={true}
           >
-            <Image source={ require('./error.png')}/>
-          </TouchableOpacity>
-          }
-          {this.state.isLoading && (
-            <View>
-              <ActivityIndicator
-                size="small"
-                color={this.props.ActivityIndicatorColor}
+            {!this.state.showRedirectModal && this.state.showModal && (
+              <WebView
+                ref={(WEBVIEW_REF) => (this.WebViewRef = WEBVIEW_REF)}
+                javaScriptEnabled={true}
+                javaScriptEnabledAndroid={true}
+                mixedContentMode="always"
+                domStorageEnabled={true}
+                allowFileAccess={true}
+                originWhitelist={["*"]}
+                source={this.Seerbit(this.state.report_link)}
+                allowUniversalAccessFromFileURLs={true}
+                onMessage={(e) => {
+                  this.messageReceived(e.nativeEvent.data);
+                }}
+                onLoadStart={() => this.setState({ isLoading: true })}
+                onLoadEnd={() => this.setState({ isLoading: false })}
               />
-            </View>
-          )}
-        </Modal>
-        <Modal
-          visible={this.state.showRedirectModal && !this.state.showModal}
-          animationType="slide"
-          transparent={false}
-        >
-          { (this.state.showRedirectModal && !this.state.showModal) &&
-          <Redirect
-            javaScriptEnabled={true}
-            javaScriptEnabledAndroid={true}
-            mixedContentMode="always"
-            domStorageEnabled={true}
-            allowFileAccess={true}
-            originWhitelist={["*"]}
-            source={{uri: this.state.redirecturl}}
-            allowUniversalAccessFromFileURLs={true}
-            onMessage={(e) => {
-              this.messageReceived(e.nativeEvent.data);
-            }}
-            onNavigationStateChange={this.handleWebViewNavigationStateChange}
-            onLoadStart={() => this.setState({isLoading: true})}
-            onLoadEnd={() => this.setState({isLoading: false})}
-          />
-          }
+            )}
+            {!this.state.isLoading ||
+              ((this.props.email ? this.props.email.length === 0 : true) && (
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: "transparent",
+                    position: "absolute",
+                    top: 10,
+                    right: 10,
+                  }}
+                  onPress={() => this.setState({ showModal: false })}
+                >
+                  <Image source={require("./error.png")} />
+                </TouchableOpacity>
+              ))}
+            {this.state.isLoading && (
+              <View>
+                <ActivityIndicator
+                  size="small"
+                  color={this.props.ActivityIndicatorColor}
+                />
+              </View>
+            )}
+          </Modal>
+          <Modal
+            visible={this.state.showRedirectModal && !this.state.showModal}
+            animationType="slide"
+            transparent={false}
+          >
+            {this.state.showRedirectModal && !this.state.showModal && (
+              <Redirect
+                javaScriptEnabled={true}
+                javaScriptEnabledAndroid={true}
+                mixedContentMode="always"
+                domStorageEnabled={true}
+                allowFileAccess={true}
+                originWhitelist={["*"]}
+                source={{ uri: this.state.redirecturl }}
+                allowUniversalAccessFromFileURLs={true}
+                onMessage={(e) => {
+                  this.messageReceived(e.nativeEvent.data);
+                }}
+                onNavigationStateChange={
+                  this.handleWebViewNavigationStateChange
+                }
+                onLoadStart={() => this.setState({ isLoading: true })}
+                onLoadEnd={() => this.setState({ isLoading: false })}
+              />
+            )}
 
-          {this.state.isLoading && (
-            <View>
-              <ActivityIndicator
-                size="large"
-                color={this.props.ActivityIndicatorColor}
-              />
-            </View>
+            {this.state.isLoading && (
+              <View>
+                <ActivityIndicator
+                  size="large"
+                  color={this.props.ActivityIndicatorColor}
+                />
+              </View>
+            )}
+          </Modal>
+          {this.props.showButton && (
+            <TouchableOpacity
+              style={this.props.btnStyles}
+              onPress={() => this.setState({ showModal: true })}
+            >
+              <Text style={this.props.textStyles}>{this.props.buttonText}</Text>
+            </TouchableOpacity>
           )}
-        </Modal>
-          {this.props.showButton &&
-          <TouchableOpacity
-            style={this.props.btnStyles}
-            onPress={() => this.setState({showModal: true})}
-          >
-            <Text style={this.props.textStyles}>{this.props.buttonText}</Text>
-          </TouchableOpacity>
-          }
         </KeyboardAvoidingView>
       </SafeAreaView>
     );
@@ -255,14 +271,14 @@ Index.defaultProps = {
   buttonText: "Pay",
   currency: "NGN",
   country: "NG",
-  pocket_reference:"",
-  vendor_id:"",
+  pocket_reference: "",
+  vendor_id: "",
   description: "LIVE",
-  autoLoad:true,
-  showButton:true,
-  setAmountByCustomer:false,
-  close_on_success:false,
-  close_prompt:false,
+  autoLoad: true,
+  showButton: true,
+  setAmountByCustomer: false,
+  close_on_success: false,
+  close_prompt: false,
   ActivityIndicatorColor: "#3f99f0",
   btnStyles: {
     alignItems: "center",

@@ -75,6 +75,7 @@ const TestApp = () => {
                 country="NG"//OPTIONAL
                 onPress={() => startPay()}//OPTIONAL
                 public_key="YOUR_PUBLIC_KEY"//REQUIRED
+                tokenize={false} //OPTIONAL
                 onSuccess={(response) => { paymentSuccessful() }}
                 onCancel={() => { console.log('something went wrong') }}
                 disabled={ startingPayment }
