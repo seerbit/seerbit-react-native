@@ -58,7 +58,7 @@ export default class Index extends Component {
                  "pocketReference":"${this.props.pocket_reference}",
                  "vendorId":"${this.props.vendor_id}",
                  "version": "0.2.0",
-                 "customization" :"${this.props.customization}",
+                 "customization" :${this.props.customization},
                  "tokenize":${this.props.tokenize}
                 }, 
                 function callback(response) {
