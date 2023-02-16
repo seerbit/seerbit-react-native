@@ -175,7 +175,7 @@ export default class Index extends Component {
         <KeyboardAvoidingView behavior="position" enabled>
           <Modal
             visible={this.state.showModal && !this.state.showRedirectModal}
-            animationType="slide"
+            // animationType="slide"
             transparent={true}
           >
             {!this.state.showRedirectModal && this.state.showModal && (
@@ -210,18 +210,10 @@ export default class Index extends Component {
                   <Image source={require("./error.png")} />
                 </TouchableOpacity>
               ))}
-            {this.state.isLoading && (
-              <View>
-                <ActivityIndicator
-                  size="small"
-                  color={this.props.ActivityIndicatorColor}
-                />
-              </View>
-            )}
           </Modal>
           <Modal
             visible={this.state.showRedirectModal && !this.state.showModal}
-            animationType="slide"
+            // animationType="slide"
             transparent={false}
           >
             {this.state.showRedirectModal && !this.state.showModal && (
@@ -243,15 +235,6 @@ export default class Index extends Component {
                 onLoadStart={() => this.setState({ isLoading: true })}
                 onLoadEnd={() => this.setState({ isLoading: false })}
               />
-            )}
-
-            {this.state.isLoading && (
-              <View>
-                <ActivityIndicator
-                  size="large"
-                  color={this.props.ActivityIndicatorColor}
-                />
-              </View>
             )}
           </Modal>
           {this.props.showButton && (
