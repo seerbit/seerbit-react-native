@@ -58,8 +58,10 @@ export default class Index extends Component {
                  "pocketReference":"${this.props.pocket_reference}",
                  "vendorId":"${this.props.vendor_id}",
                  "version": "0.2.0",
-                 "customization" :${this.props.customization},
+                 "customization" :${JSON.stringify(this.props.customization)},
                  "tokenize":${this.props.tokenize}
+                 "recurrent":${this.props.recurrent}
+                 "planId":${this.props.planId}
                 }, 
                 function callback(response) {
                  var resp = {event:'callback', response};

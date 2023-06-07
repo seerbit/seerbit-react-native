@@ -12,9 +12,13 @@ Register for a merchant account on [Seerbit Merchant Dashboard](https://dashboar
 
 ```bash
 npm install --save seerbit-react-native
+npm install react-native
+npm install react-native-webview
 ```
 ```bash
 yarn add seerbit-react-native
+yarn add react-native
+yarn add react-native-webview
 ```
 ## API Documentation 
    https://doc.seerbit.com
@@ -101,6 +105,8 @@ const TestApp = () => {
                   onSuccess={(response) => { paymentSuccessful() }}
                   onCancel={() => { console.log('something went wrong') }}
                   disabled={ startingPayment }
+                  recurrent={false} // Recurrent Payment
+                  planId="" // Subscription Plan ID
                   customization={
                       {
                           theme: {
