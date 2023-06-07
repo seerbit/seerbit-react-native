@@ -79,6 +79,8 @@ const TestApp = () => {
                 onSuccess={(response) => { paymentSuccessful() }}
                 onCancel={() => { console.log('something went wrong') }}
                 disabled={ startingPayment }
+                recurrent={false} // Recurrent Payment
+                planId="" // Subscription Plan ID
                 customization={
                     {
                         theme: {
