@@ -59,8 +59,8 @@ export default class Index extends Component {
                  "vendorId":"${this.props.vendor_id}",
                  "version": "0.2.0",
                  "customization" :${JSON.stringify(this.props.customization)},
-                 "tokenize":${this.props.tokenize}
-                 "recurrent":${this.props.recurrent}
+                 "tokenize":${this.props.tokenize},
+                 "recurrent":${this.props.recurrent},
                  "planId":${this.props.planId}
                 }, 
                 function callback(response) {
