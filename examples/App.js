@@ -81,6 +81,7 @@ const TestApp = () => {
                 disabled={ startingPayment }
                 recurrent={false} // Recurrent Payment
                 planId="" // Subscription Plan ID
+                productId="" //Product ID
                 customization={
                     {
                         theme: {
