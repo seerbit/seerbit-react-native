@@ -215,7 +215,6 @@ export default class Index extends Component {
             visible={this.state.showRedirectModal && !this.state.showModal}
             // animationType="slide"
             transparent={false}>
-            <SafeAreaView>
               {this.state.showRedirectModal && !this.state.showModal && (
                 <Redirect
                   javaScriptEnabled={true}
@@ -236,7 +235,6 @@ export default class Index extends Component {
                   onLoadEnd={() => this.setState({isLoading: false})}
                 />
               )}
-            </SafeAreaView>
           </Modal>
           {this.props.showButton && (
             <TouchableOpacity
