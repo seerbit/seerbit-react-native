@@ -1,6 +1,6 @@
 {
   "name": "seerbit-react-native",
-  "version": "0.1.0",
+  "version": "2.0.0",
   "description": "Accept Payments in your react native application with Card, Account, Transfer, USSD, Mobile Money",
   "source": "./src/index.tsx",
   "main": "./lib/commonjs/index.js",
